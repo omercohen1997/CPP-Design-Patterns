@@ -1,2 +1,2 @@
-# Generic-Framework-CPP
-A generic C++ framework I designed for easy integration into various projects, providing reusable components for common tasks.
+# CPP-Design-Patterns
+Reusable C++ components implementing common design patterns for easy integration into various projects.
