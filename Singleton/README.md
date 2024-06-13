@@ -12,5 +12,3 @@ It is thread-safe and uses a combination of atomic operations and mutexes to ens
 - Lazy Initialization: The instance is created only when it is first needed.
 - Automatic Cleanup: The instance is automatically cleaned up when the program exits.
 
-### Installation
-To use the Singleton component in your project, simply clone the repository and include the `Singleton.hpp` file in your project.
