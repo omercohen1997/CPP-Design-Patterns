@@ -1,45 +1,40 @@
-#ifndef IILRD_RD147_FD_LISTENER_HPP
-#define IILRD_RD147_FD_LISTENER_HPP
+#ifndef FD_LISTENER_HPP
+#define FD_LISTENER_HPP
 
 #include <unordered_map>
 #include <vector>
 #include <functional>
 
-namespace ilrd
+class FDListener
 {
+public:
+    enum Operation
+    {
+        WRITE,
+        READ,
+        EXCEPT
+    };
+    typedef std::vector<std::pair<int, FDListener::Operation>> pairVector;
 
-    class FDListener
+    class HashFunc
     {
     public:
-        enum Operation
+        std::size_t operator()(const std::pair<int, Operation> &p) const
         {
-            WRITE,
-            READ,
-            EXCEPT
-        };
-        typedef std::vector<std::pair<int, FDListener::Operation>> pairVector;
+            auto hash1 = std::hash<int>{}(p.first);
+            auto hash2 = std::hash<Operation>{}(p.second);
 
-        class HashFunc
-        {
-        public:
-            std::size_t operator()(const std::pair<int, Operation> &p) const
+            if (hash1 != hash2)
             {
-                auto hash1 = std::hash<int>{}(p.first);
-                auto hash2 = std::hash<Operation>{}(p.second);
-
-                if (hash1 != hash2)
-                {
-                    return hash1 ^ hash2;
-                }
-
-                return hash1;
+                return hash1 ^ hash2;
             }
-        };
-        
-        virtual ~FDListener() {}
-        virtual pairVector Listen(const std::unordered_map<std::pair<int, Operation>, std::function<void()>, HashFunc> &map_callbacks) = 0;
+
+            return hash1;
+        }
     };
 
-} // ilrd
+    virtual ~FDListener() {}
+    virtual pairVector Listen(const std::unordered_map<std::pair<int, Operation>, std::function<void()>, HashFunc> &map_callbacks) = 0;
+};
 
-#endif // IILRD_RD147_FD_LISTENER_HPP
+#endif // FD_LISTENER_HPP
